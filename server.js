@@ -20,8 +20,26 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
 
+//set up socket.io
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+io.on("connection", function(socket) {
+  console.log("a user connected");
+  socket.on("disconnect", () => {
+    console.log("connection lost");
+  });
+  socket.on("visitor", msg => {
+    io.emit("visitor", msg);
+  });
+  socket.on("delete", msg => {
+    io.emit("delete", msg);
+  });
+  socket.on("saved", msg => {
+    io.emit("saved", msg);
+  });
+});
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/googlebooks");
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`🌎 ==> API server now on port ${PORT}!`);
 });

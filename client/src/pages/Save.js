@@ -5,9 +5,13 @@ import FlexColumn from "../components/FlexColumn";
 import BookCard from "../components/BookCard";
 
 class Save extends Component {
-  state = {
-    savedBooks: []
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      savedBooks: [],
+      socket: props.socket
+    };
+  }
 
   componentDidMount() {
     API.getSavedBooks().then(response => {
@@ -15,12 +19,13 @@ class Save extends Component {
     });
   }
 
-  handleDelete = index => {
+  handleDelete = (index, title) => {
     var dbId = this.state.savedBooks[index]._id;
     API.deleteBook(dbId).then(response => {
-      var reducedArray = this.state.savedBooks.filter((item, i) => i != index);
+      var reducedArray = this.state.savedBooks.filter((item, i) => i !== index);
       this.setState({ savedBooks: reducedArray });
     });
+    this.state.socket.emit("delete", "a user just deleted the book: " + title);
   };
 
   render() {

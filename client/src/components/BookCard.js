@@ -25,7 +25,6 @@ const styles = theme => ({
     color: "#053f5e"
   },
   root: {
-    margin: `${theme.spacing.unit}px`,
     backgroundColor: "rgba(255,255,255,0.75)",
     color: "#022c43",
     margin: `${theme.spacing.unit * 1.5}px`,
@@ -61,7 +60,7 @@ const BookCard = props => {
   return (
     <div className={classnames(root, cardRow)}>
       <div className={cardColumn}>
-        <img src={image} className={thumbnail} />
+        <img src={image} className={thumbnail} alt={title} />
       </div>
 
       <div className={classnames(cardColumn, margin)}>
@@ -79,7 +78,7 @@ const BookCard = props => {
           <DarkButton
             className={margin}
             onClick={() => {
-              props.clickFunction(index);
+              props.clickFunction(index, title);
             }}
           >
             {buttonText}

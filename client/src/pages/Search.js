@@ -9,11 +9,15 @@ import BookCard from "../components/BookCard";
 import moment from "moment";
 
 class Search extends Component {
-  state = {
-    searchResults: [],
-    author: "",
-    title: ""
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchResults: [],
+      author: "",
+      title: "",
+      socket: props.socket
+    };
+  }
 
   handleSubmit = () => {
     console.log(this.state.title, this.state.author);
@@ -54,7 +58,7 @@ class Search extends Component {
     this.setState({ [name]: value });
   };
 
-  handleItemSave = index => {
+  handleItemSave = (index, title) => {
     var item = this.state.searchResults[index];
     var bookObj = {
       title: item.volumeInfo.title,
@@ -73,6 +77,7 @@ class Search extends Component {
       var reducedArray = this.state.searchResults.filter((item, i) => i !== index);
       this.setState({ searchResults: reducedArray });
     });
+    this.state.socket.emit("saved", "a user just saved: " + title);
   };
 
   setPublishedDate = publishedDate => {

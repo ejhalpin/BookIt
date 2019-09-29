@@ -29,16 +29,22 @@ const styles = theme => {
       "&:hover": {
         opacity: 0.7
       }
+    },
+    notify: {
+      fontSize: "1rem"
     }
   };
 };
 const Navbar = props => {
-  const { root, toolBar, brand, link, banner } = props.classes;
+  const { root, toolBar, brand, link, banner, notify } = props.classes;
   return (
     <div className={banner}>
       <AppBar position="static" className={root}>
         <Toolbar className={toolBar}>
           <Typography className={brand}>BookIt</Typography>
+          <Typography variant="h6" className={notify}>
+            {props.message}
+          </Typography>
           <Typography variant="h6">
             <Link to="/" className={link}>
               Search
